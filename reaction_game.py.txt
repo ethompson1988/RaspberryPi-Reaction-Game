@@ -1,0 +1,52 @@
+from gpiozero import Button, RGBLED, Buzzer
+from time import sleep
+import random
+
+
+buzzer = Buzzer(17)
+
+player_1 = Button(4)
+player_2 = Button(13)
+
+led = RGBLED(red=11, green=9, blue=10)
+
+colors_list = ["red","green","blue","yellow","magenta","white", "cyan"]
+color_codes = [(1,0,0),(0,1,0),(0,0,1),(1,1,0),(1,0,1),(1,1,1), (0,1,1)]
+
+print("Player one pick a color:")
+for i in range(len(colors_list)):
+	print(f"Select {i} for {colors_list[i]}")
+player_1_input = int(input())
+player_1_color = color_codes[player_1_input]
+
+colors_list.pop(player_1_input)
+color_codes.pop(player_1_input)
+
+print("Player two pick a color:")
+for i in range(len(colors_list)):
+	print(f"Select {i} for {colors_list[i]}")
+player_2_input = int(input())
+player_2_color = color_codes[player_2_input]
+
+
+
+start_game = input("Press <ENTER> to start.")
+
+time = random.uniform(2,4)
+sleep(time)
+buzzer.on()
+sleep(1)
+buzzer.off()
+
+while True:
+	if player_1.is_pressed:
+		led.color = player_1_color
+		print("Player 1 wins!")
+		sleep(2)
+		break
+	if player_2.is_pressed:
+		led.color = player_2_color
+		print("Player 2 wins!")
+		sleep(2)
+		break
+
